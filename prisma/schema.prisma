@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  CLIENT
+  VENDOR
+  ADMIN
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  password  String
+  phone     String?
+  role      Role
+  region    String?
+  profilePicture String?
+  createdAt DateTime @default(now())
+
+  refreshTokens RefreshToken[]
+  client Client?
+  vendor Vendor?
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model Client {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  reviews   Review[]
+}
+
+model Vendor {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  category  String?
+  about     String?
+  price     Int?
+  experience Int?
+  portfolioUrl String?
+  type         Int?
+  profileStatus ProfileStatus @default(UNDER_REVIEW)
+  topImageUrl String?
+  rating Float?
+  portfolioPosts PortfolioPost[]
+  reviews Review[]
+}
+
+ 
+model PortfolioPost {
+  id        String   @id @default(uuid())
+  vendorId  String
+  vendor    Vendor   @relation(fields: [vendorId], references: [id])
+  hashtags  String[]
+  mediaUrls    String[]
+  createdAt DateTime @default(now())
+}
+
+model Review {
+  id        String @id @default(uuid())
+  vendorId  String
+  clientId  String
+  vendor    Vendor @relation(fields: [vendorId], references: [id])
+  client    Client @relation(fields: [clientId], references: [id])
+  value     Int
+  comment   String?
+  mediaUrls String[]
+  rater     Role
+}
+
+enum ProfileStatus {
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+}

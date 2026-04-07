@@ -1,0 +1,58 @@
+
+// test registering a new vendor
+###
+POST http://localhost:8080/api/vendors/register
+Content-Type: application/json
+
+{
+  "name": "Test Vendor",
+  "email": "testvendor1@example.com",
+  "password": "password123"
+}
+
+###
+// test logging in as the new vendor
+POST http://localhost:8080/api/vendors/login
+Content-Type: application/json
+
+{
+  "email": "testvendor1@example.com",
+  "password": "password123"
+}
+
+###
+// test onboarding a vendor
+
+POST http://localhost:8080/api/vendors/onboard
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3NmM0YjdiOS0yNzg4LTQ3MzktYTBiOS1lODk2ZjBjY2NjNzAiLCJyb2xlIjoiVkVORE9SIiwiaWF0IjoxNzc1NTEyMzA0LCJleHAiOjE3NzU1MTMyMDR9.OfAxNRBn7lIl9Qh9dI06M8N44T_rtCmN2_OZWyJxWiw
+
+{
+  "name": "Fathi Ramadan",
+  "phone": "1234567890",
+  "region": "Cairo",
+  "category": "Portrait",
+  "experience": 5,
+  "portfolioUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpozJ5j8gH5yMSc2sKne5teLdCvsM0MWDfkw&s",
+  "profilePicture": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpozJ5j8gH5yMSc2sKne5teLdCvsM0MWDfkw&s",
+  "price": 440,
+  "type": 1,
+  "about": "Experienced graphic designer specializing in branding and logo design."
+}
+
+
+// test createing a portfolio post as a vendor
+###
+POST http://localhost:8080/api/vendors/posts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3NmM0YjdiOS0yNzg4LTQ3MzktYTBiOS1lODk2ZjBjY2NjNzAiLCJyb2xlIjoiVkVORE9SIiwiaWF0IjoxNzc1NTE0OTE3LCJleHAiOjE3NzU1MTU4MTd9.Q5QeTQkMih1D79RnwX6Vp_nIR9hRnlHXgJNLLAbE_Vc
+
+{
+  "hashtags": ["graphic design", "branding"],
+  "mediaUrls": ["https://v1.pinimg.com/videos/captions/ko-kr/f3/cb/02/f3cb0267c3bd1c74363cf4bda3075856.vtt"]
+}
+
+
+// test getting a vendor by id as a client
+###
+GET http://localhost:8080/api/clients/vendors/a21f20c6-c571-443b-bd4f-b3169a02fd18

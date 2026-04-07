@@ -1,0 +1,44 @@
+
+// test registering a new client
+###
+POST http://localhost:8080/api/clients/register
+Content-Type: application/json
+
+
+{
+  "name": "Test Client",
+  "email": "testclient1@example.com",
+  "password": "password123"
+}
+
+// test logging in as the new client
+###
+POST http://localhost:8080/api/clients/login
+Content-Type: application/json
+
+{
+  "email": "testclient1@example.com",
+  "password": "password123"
+}
+
+### 
+// test onboarding a client 
+POST http://localhost:8080/api/clients/onboard
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyODkzZjRhMy02N2Q3LTQ3NDEtOGJhNS1mMjdjYzA4YjYzYTgiLCJyb2xlIjoiQ0xJRU5UIiwiaWF0IjoxNzc1MzgxNDcxLCJleHAiOjE3NzUzODIzNzF9.8KdJ0ia4R0EkBF3Peawz0zRCCgH-Temr5NGh_GtfGQo
+
+{
+  "name": "Test Client",
+  "phone": "1234567890",
+  "region": "Cairo"
+}
+
+
+
+
+
+// test discovering vendors as a client
+###
+GET http://localhost:8080/api/clients/discover
+
+
