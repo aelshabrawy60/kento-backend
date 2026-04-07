@@ -7,7 +7,7 @@ exports.addReview = async ({ userId, vendorId, value, comment, mediaUrls }) => {
     // get the clientId from the userId
     const client = await prisma.client.findUnique({
         where: {
-            userId
+            userId: userId
         },
         select: {
             id: true,

@@ -45,11 +45,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3NmM0Y
 ###
 POST http://localhost:8080/api/vendors/posts
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3NmM0YjdiOS0yNzg4LTQ3MzktYTBiOS1lODk2ZjBjY2NjNzAiLCJyb2xlIjoiVkVORE9SIiwiaWF0IjoxNzc1NTE0OTE3LCJleHAiOjE3NzU1MTU4MTd9.Q5QeTQkMih1D79RnwX6Vp_nIR9hRnlHXgJNLLAbE_Vc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3NmM0YjdiOS0yNzg4LTQ3MzktYTBiOS1lODk2ZjBjY2NjNzAiLCJyb2xlIjoiVkVORE9SIiwiaWF0IjoxNzc1NTk4NTAzLCJleHAiOjE3NzU1OTk0MDN9.gimNuTl_JXYsGSTpavN6LUe3ue9LyNQtfPGT1LZ9DZQ
 
 {
   "hashtags": ["graphic design", "branding"],
-  "mediaUrls": ["https://v1.pinimg.com/videos/captions/ko-kr/f3/cb/02/f3cb0267c3bd1c74363cf4bda3075856.vtt"]
+  "mediaUrls": ["https://i.pinimg.com/1200x/76/2d/35/762d356abb76536e29c1a38b6f088d43.jpg"]
 }
 
 

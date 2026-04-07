@@ -18,7 +18,7 @@ const { validate } = require("../../middlewares/validate.middleware");
 const { registerSchema, onboardSchema } = require("../../validators/client/client.validator");
 const { discover, getVendorById } = require("../../controllers/client/discover.controller");
 const { addReview } = require("../../controllers/client/reviews.controller");
-
+const { getSavedPosts, savePost, unSavePost } = require("../../controllers/client/saves.controller");
 
 router.post("/register", validate(registerSchema), register);
 router.post("/login", login);
@@ -28,5 +28,8 @@ router.post("/onboard", validate(onboardSchema), authenticate, role("CLIENT"), o
 router.get("/discover", discover)
 router.get("/vendors/:vendorId", getVendorById)
 router.post("/reviews", authenticate, role("CLIENT"), addReview)
+router.get("/saves", authenticate, role("CLIENT"), getSavedPosts)
+router.post("/saves", authenticate, role("CLIENT"), savePost)
+router.delete("/saves", authenticate, role("CLIENT"), unSavePost)
 
 module.exports = router;

@@ -1,7 +1,10 @@
+// define TOKEN
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyZDg1MmRlMy03MDQ1LTRjOWMtOTU4Ni0zMWM3ZWFiY2RjYzYiLCJyb2xlIjoiQ0xJRU5UIiwiaWF0IjoxNzc1NTk2NzQ5LCJleHAiOjE3NzU1OTc2NDl9.HgcUgG4ryQqjs-aBMUZLKOC8xJkmoi94yn36pj6QTtk
+@API_URL = http://localhost:8080/api/clients
 
 // test registering a new client
 ###
-POST http://localhost:8080/api/clients/register
+POST {{API_URL}}/register
 Content-Type: application/json
 
 
@@ -13,7 +16,7 @@ Content-Type: application/json
 
 // test logging in as the new client
 ###
-POST http://localhost:8080/api/clients/login
+POST {{API_URL}}/login
 Content-Type: application/json
 
 {
@@ -23,9 +26,9 @@ Content-Type: application/json
 
 ### 
 // test onboarding a client 
-POST http://localhost:8080/api/clients/onboard
+POST {{API_URL}}/onboard
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyODkzZjRhMy02N2Q3LTQ3NDEtOGJhNS1mMjdjYzA4YjYzYTgiLCJyb2xlIjoiQ0xJRU5UIiwiaWF0IjoxNzc1MzgxNDcxLCJleHAiOjE3NzUzODIzNzF9.8KdJ0ia4R0EkBF3Peawz0zRCCgH-Temr5NGh_GtfGQo
+Authorization: Bearer {{TOKEN}}
 
 {
   "name": "Test Client",
@@ -39,18 +42,44 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyODkzZ
 
 // test discovering vendors as a client
 ###
-GET http://localhost:8080/api/clients/discover
+GET {{API_URL}}/discover
 
 
 // test adding a review as a client
 ###
-POST http://localhost:8080/api/clients/reviews
+POST {{API_URL}}/reviews
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyZDg1MmRlMy03MDQ1LTRjOWMtOTU4Ni0zMWM3ZWFiY2RjYzYiLCJyb2xlIjoiQ0xJRU5UIiwiaWF0IjoxNzc1NTg0MzM4LCJleHAiOjE3NzU1ODUyMzh9.VhevdJtt1SWK_svnUI8zRUaxzkNfkLBFzh3QAOtPNb0
+Authorization: Bearer {{TOKEN}}
 
 {
   "vendorId": "a21f20c6-c571-443b-bd4f-b3169a02fd18",
   "value": 5,
   "comment": "Great vendor!",
   "mediaUrls": ["https://example.com/review1.jpg", "https://example.com/review2.jpg"]
+}
+
+
+// test getting saved posts as a client
+###
+GET {{API_URL}}/saves
+Authorization: Bearer {{TOKEN}}
+
+// test saving a post as a client
+###
+POST {{API_URL}}/saves
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+{
+  "postId": "3075338c-efe4-43e5-848e-75e099e4b2ea"
+}
+
+// test unsaving a post as a client
+###
+DELETE {{API_URL}}/saves
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+{
+  "postId": "3075338c-efe4-43e5-848e-75e099e4b2ea"
 }

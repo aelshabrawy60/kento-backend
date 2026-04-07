@@ -61,6 +61,7 @@ exports.getVendorById = async (vendorId) => {
                 }
             },
         });
+
         return vendor;
     } catch (error) {
         console.error("Get vendor by ID error:", error);

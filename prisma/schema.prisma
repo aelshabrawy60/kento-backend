@@ -43,10 +43,11 @@ model RefreshToken {
 }
 
 model Client {
-  id      String   @id @default(uuid())
-  userId  String   @unique
-  user    User     @relation(fields: [userId], references: [id])
-  reviews Review[]
+  id         String      @id @default(uuid())
+  userId     String      @unique
+  user       User        @relation(fields: [userId], references: [id])
+  reviews    Review[]
+  savedPosts SavedPost[]
 }
 
 model Vendor {
@@ -67,12 +68,13 @@ model Vendor {
 }
 
 model PortfolioPost {
-  id        String   @id @default(uuid())
-  vendorId  String
-  vendor    Vendor   @relation(fields: [vendorId], references: [id])
-  hashtags  String[]
-  mediaUrls String[]
-  createdAt DateTime @default(now())
+  id         String      @id @default(uuid())
+  vendorId   String
+  vendor     Vendor      @relation(fields: [vendorId], references: [id])
+  hashtags   String[]
+  mediaUrls  String[]
+  createdAt  DateTime    @default(now())
+  savedPosts SavedPost[]
 }
 
 model Review {
@@ -86,6 +88,17 @@ model Review {
   comment   String?
   mediaUrls String[]
   rater     Role
+}
+
+model SavedPost {
+  id        String        @id @default(uuid())
+  clientId  String
+  client    Client        @relation(fields: [clientId], references: [id])
+  postId    String
+  post      PortfolioPost @relation(fields: [postId], references: [id])
+  createdAt DateTime      @default(now())
+
+  @@unique([clientId, postId])
 }
 
 enum ProfileStatus {
