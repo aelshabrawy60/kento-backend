@@ -17,8 +17,8 @@ POST http://localhost:8080/api/clients/login
 Content-Type: application/json
 
 {
-  "email": "testclient1@example.com",
-  "password": "password123"
+  "email": "aelshabrawy60@gmail.com",
+  "password": "1522004aA"
 }
 
 ### 
@@ -42,3 +42,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyODkzZ
 GET http://localhost:8080/api/clients/discover
 
 
+// test adding a review as a client
+###
+POST http://localhost:8080/api/clients/reviews
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyZDg1MmRlMy03MDQ1LTRjOWMtOTU4Ni0zMWM3ZWFiY2RjYzYiLCJyb2xlIjoiQ0xJRU5UIiwiaWF0IjoxNzc1NTg0MzM4LCJleHAiOjE3NzU1ODUyMzh9.VhevdJtt1SWK_svnUI8zRUaxzkNfkLBFzh3QAOtPNb0
+
+{
+  "vendorId": "a21f20c6-c571-443b-bd4f-b3169a02fd18",
+  "value": 5,
+  "comment": "Great vendor!",
+  "mediaUrls": ["https://example.com/review1.jpg", "https://example.com/review2.jpg"]
+}

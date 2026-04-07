@@ -14,7 +14,7 @@ exports.discover = async ({ category, region, priceRange }) => {
         if (category) where.category = category;
         // the region filter is in the user table, so we need to join with the user table to filter by region
         if (region) where.user = { region };
-        
+
         if (priceRange) {
             const [min, max] = priceRange.split("-").map(Number);
             where.price = { gte: min, lte: max };
@@ -54,6 +54,11 @@ exports.getVendorById = async (vendorId) => {
                     },
                 },
                 portfolioPosts: true,
+                reviews: {
+                    where: {
+                        rater: "CLIENT"
+                    }
+                }
             },
         });
         return vendor;
