@@ -1,4 +1,6 @@
 const jwt = require("jsonwebtoken");
+const StreamChat = require("stream-chat").StreamChat;
+
 
 exports.generateAccessToken = (user) => {
   return jwt.sign(
@@ -15,3 +17,14 @@ exports.generateRefreshToken = (user) => {
     { expiresIn: process.env.REFRESH_TOKEN_EXPIRES }
   );
 };
+
+exports.generateStreamChatToken = (user) => {
+
+  const serverClient = StreamChat.getInstance(
+    process.env.STREAM_CHAT_API_KEY,
+    process.env.STREAM_CHAT_API_SECRET,
+  );
+
+  const token = serverClient.createToken(user.id);
+  return token;
+}

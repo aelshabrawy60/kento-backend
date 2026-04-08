@@ -5,8 +5,7 @@ POST http://localhost:8080/api/vendors/register
 Content-Type: application/json
 
 {
-  "name": "Test Vendor",
-  "email": "testvendor1@example.com",
+  "email": "testvendor2@example.com",
   "password": "password123"
 }
 
@@ -25,17 +24,17 @@ Content-Type: application/json
 
 POST http://localhost:8080/api/vendors/onboard
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3NmM0YjdiOS0yNzg4LTQ3MzktYTBiOS1lODk2ZjBjY2NjNzAiLCJyb2xlIjoiVkVORE9SIiwiaWF0IjoxNzc1NTEyMzA0LCJleHAiOjE3NzU1MTMyMDR9.OfAxNRBn7lIl9Qh9dI06M8N44T_rtCmN2_OZWyJxWiw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyMWYyYjhhZS0xNDBkLTRkY2EtYTExYS0wOGVlMzQ3ZTljZGYiLCJyb2xlIjoiVkVORE9SIiwiaWF0IjoxNzc1NjgwMTIyLCJleHAiOjE3NzU2ODEwMjJ9.p-EsCoVfU4-HsPwJcFEoTOPHFZbAzXLNtF55csym5Pc
 
-{
-  "name": "Fathi Ramadan",
+{ 
+  "name": "Ayman Reda",
   "phone": "1234567890",
-  "region": "Cairo",
-  "category": "Portrait",
+  "region": "Giza",
+  "category": "Events",
   "experience": 5,
   "portfolioUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpozJ5j8gH5yMSc2sKne5teLdCvsM0MWDfkw&s",
-  "profilePicture": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpozJ5j8gH5yMSc2sKne5teLdCvsM0MWDfkw&s",
-  "price": 440,
+  "profilePicture": "https://i.pinimg.com/736x/c7/f1/db/c7f1db96107892357c17725424f579ff.jpg",
+  "price": 670,
   "type": 1,
   "about": "Experienced graphic designer specializing in branding and logo design."
 }

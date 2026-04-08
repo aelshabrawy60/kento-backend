@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const {
   generateAccessToken,
   generateRefreshToken,
+  generateStreamChatToken
 } = require("../../utils/token");
 const { ApiError } = require("../../utils/apiError");
 
@@ -28,6 +29,8 @@ exports.register = async ({ name, email, password }) => {
   // generate tokens
   const accessToken = generateAccessToken(user);
   const refreshToken = generateRefreshToken(user);
+  const streamChatToken = generateStreamChatToken(user);
+
   await prisma.refreshToken.create({
     data: {
       token: refreshToken,
@@ -36,7 +39,7 @@ exports.register = async ({ name, email, password }) => {
     },
   });
   delete user.password;
-  return { user, accessToken, refreshToken };
+  return { user, accessToken, refreshToken, streamChatToken };
 };
 
 exports.login = async ({ email, password }) => {
@@ -48,6 +51,7 @@ exports.login = async ({ email, password }) => {
 
   const accessToken = generateAccessToken(user);
   const refreshToken = generateRefreshToken(user);
+  const streamChatToken = generateStreamChatToken(user);
 
   await prisma.refreshToken.create({
     data: {
@@ -59,7 +63,7 @@ exports.login = async ({ email, password }) => {
 
   delete user.password;
 
-  return { user, accessToken, refreshToken };
+  return { user, accessToken, refreshToken, streamChatToken };
 };
 
 exports.refresh = async (token) => {

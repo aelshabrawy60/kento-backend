@@ -26,6 +26,7 @@ exports.discover = async ({ category, region, priceRange }) => {
             include: {
                 user: {
                     select: {
+                        id: true,
                         name: true,
                         profilePicture: true,
                         region: true,
@@ -48,6 +49,7 @@ exports.getVendorById = async (vendorId) => {
             include: {
                 user: {
                     select: {
+                        id: true,
                         name: true,
                         profilePicture: true,
                         region: true,
