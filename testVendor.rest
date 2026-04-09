@@ -5,7 +5,7 @@ POST http://localhost:8080/api/vendors/register
 Content-Type: application/json
 
 {
-  "email": "testvendor2@example.com",
+  "email": "testvendor4@example.com",
   "password": "password123"
 }
 
@@ -15,7 +15,7 @@ POST http://localhost:8080/api/vendors/login
 Content-Type: application/json
 
 {
-  "email": "testvendor1@example.com",
+  "email": "testvendor2@example.com",
   "password": "password123"
 }
 
@@ -24,19 +24,19 @@ Content-Type: application/json
 
 POST http://localhost:8080/api/vendors/onboard
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyMWYyYjhhZS0xNDBkLTRkY2EtYTExYS0wOGVlMzQ3ZTljZGYiLCJyb2xlIjoiVkVORE9SIiwiaWF0IjoxNzc1NjgwMTIyLCJleHAiOjE3NzU2ODEwMjJ9.p-EsCoVfU4-HsPwJcFEoTOPHFZbAzXLNtF55csym5Pc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyOGJmMTM5My1hMDkxLTQzZWUtOWRhZi0zOWE2NDc3M2Q1ZWEiLCJyb2xlIjoiVkVORE9SIiwiaWF0IjoxNzc1NzU0NzU0LCJleHAiOjE3NzU3NTU2NTR9.B-m1p4xAWbZKJCGJ0YZDTsjdB7qPpURG1oolpac7KhU
 
 { 
-  "name": "Ayman Reda",
+  "name": "Mohamed Gamal",
   "phone": "1234567890",
-  "region": "Giza",
-  "category": "Events",
-  "experience": 5,
+  "region": "Alexandria",
+  "category": "Fashion",
+  "experience": 3,
   "portfolioUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpozJ5j8gH5yMSc2sKne5teLdCvsM0MWDfkw&s",
-  "profilePicture": "https://i.pinimg.com/736x/c7/f1/db/c7f1db96107892357c17725424f579ff.jpg",
-  "price": 670,
-  "type": 1,
-  "about": "Experienced graphic designer specializing in branding and logo design."
+  "profilePicture": "https://www.ziprecruiter.com/svc/fotomat/public-ziprecruiter/cms/889026084FreelancePhotographer.jpg=ws1280x960",
+  "price": 1200,
+  "type": 2,
+  "about": "I'm a professional fashion photographer with 3 years of experience in commercial photography. Specializing in e-commerce and lifestyle product shots."
 }
 
 
@@ -44,11 +44,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyMWYyY
 ###
 POST http://localhost:8080/api/vendors/posts
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3NmM0YjdiOS0yNzg4LTQ3MzktYTBiOS1lODk2ZjBjY2NjNzAiLCJyb2xlIjoiVkVORE9SIiwiaWF0IjoxNzc1NTk4NTAzLCJleHAiOjE3NzU1OTk0MDN9.gimNuTl_JXYsGSTpavN6LUe3ue9LyNQtfPGT1LZ9DZQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyOGJmMTM5My1hMDkxLTQzZWUtOWRhZi0zOWE2NDc3M2Q1ZWEiLCJyb2xlIjoiVkVORE9SIiwiaWF0IjoxNzc1NzU0NzU0LCJleHAiOjE3NzU3NTU2NTR9.B-m1p4xAWbZKJCGJ0YZDTsjdB7qPpURG1oolpac7KhU
 
 {
   "hashtags": ["graphic design", "branding"],
-  "mediaUrls": ["https://i.pinimg.com/1200x/76/2d/35/762d356abb76536e29c1a38b6f088d43.jpg"]
+  "mediaUrls": ["https://i.pinimg.com/736x/f4/5a/98/f45a98fefc03972f92f31cdbd24e0b9d.jpg"]
 }
 
 
