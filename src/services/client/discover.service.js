@@ -42,7 +42,44 @@ exports.discover = async ({ category, region, priceRange }) => {
 };
 
 
-exports.getVendorById = async (vendorId) => {
+exports.getVendorById = async ({ vendorId, userId }) => {
+
+    let savedPostIds = [];
+
+    if (userId) {
+        // get the clientId from the userId
+        const client = await prisma.client.findUnique({
+            where: {
+                userId: userId
+            },
+            select: {
+                id: true,
+                user: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
+        });
+
+        const clientId = client.id;
+        // get user saved posts ids
+        const savedPosts = await prisma.savedPost.findMany({
+            where: {
+                clientId: clientId
+            },
+            select: {
+                postId: true
+            }
+        });
+
+        console.log("saved posts", savedPosts)
+
+        savedPostIds = savedPosts?.map((post) => post.postId);
+    }
+
+
+
     try {
         const vendor = await prisma.vendor.findUnique({
             where: { id: vendorId },
@@ -62,6 +99,11 @@ exports.getVendorById = async (vendorId) => {
                     }
                 }
             },
+        });
+
+        // add isSaved to each portfolio post
+        vendor.portfolioPosts.forEach((post) => {
+            post.isSaved = savedPostIds.includes(post.id);
         });
 
         return vendor;

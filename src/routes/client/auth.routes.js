@@ -3,7 +3,8 @@ const router = express.Router();
 
 // check auth middleware
 const authenticate = require("../../middlewares/auth.middleware");
-// check the role middleware
+
+const optionalAuth = require("../../middlewares/optionalAuth.middleware")
 const role = require("../../middlewares/role.middleware");
 
 const { onboard } = require("../../controllers/client/onboard.controller");
@@ -26,7 +27,7 @@ router.post("/refresh", refresh);
 router.post("/logout", logout);
 router.post("/onboard", validate(onboardSchema), authenticate, role("CLIENT"), onboard);
 router.get("/discover", discover)
-router.get("/vendors/:vendorId", getVendorById)
+router.get("/vendors/:vendorId", optionalAuth, getVendorById)
 router.post("/reviews", authenticate, role("CLIENT"), addReview)
 router.get("/saves", authenticate, role("CLIENT"), getSavedPosts)
 router.post("/saves", authenticate, role("CLIENT"), savePost)

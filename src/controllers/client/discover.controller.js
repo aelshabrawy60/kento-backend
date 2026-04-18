@@ -17,7 +17,12 @@ exports.discover = async (req, res) => {
 exports.getVendorById = async (req, res) => {
     try {
         const { vendorId } = req.params;
-        const vendor = await discoverService.getVendorById(vendorId);
+
+        const userId = req.user?.id || null;
+
+        console.log("userId", userId)
+
+        const vendor = await discoverService.getVendorById({ vendorId, userId });
         if (!vendor) {
             throw new ApiError(404, "Vendor not found");
         }
@@ -26,6 +31,7 @@ exports.getVendorById = async (req, res) => {
         if (error instanceof ApiError) {
             throw error;
         }
+        console.log(error);
         throw new ApiError(500, "Failed to fetch vendor");
     }
 };
