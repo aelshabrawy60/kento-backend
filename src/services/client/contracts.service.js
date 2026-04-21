@@ -28,9 +28,15 @@ exports.getContracts = async ({ userId }) => {
                     price: true,
                 }
             }
+        },
+        // order by createdAt desc
+        orderBy: {
+            createdAt: "desc"
         }
+
     });
 }
+
 
 exports.createContract = async ({ userId, vendorId, description, title, price, deposit, startDate, deliveryDate }) => {
     const client = await prisma.client.findUnique({
@@ -51,7 +57,8 @@ exports.createContract = async ({ userId, vendorId, description, title, price, d
             price,
             deposit,
             startDate,
-            deliveryDate
+            deliveryDate,
+            status: "OFFERED"
         }
     });
 }

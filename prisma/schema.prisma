@@ -121,6 +121,7 @@ model Contract {
 }
 
 enum ContractStatus {
+  OFFERED // wating for offer from vendor
   PENDING // waiting for payment
   IN_PROGRESS
   COMPLETED

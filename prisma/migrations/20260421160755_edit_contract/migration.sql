@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Contract" ALTER COLUMN "price" DROP NOT NULL,
+ALTER COLUMN "deposit" DROP NOT NULL,
+ALTER COLUMN "deliveryDate" DROP NOT NULL;
