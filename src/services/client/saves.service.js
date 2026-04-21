@@ -24,11 +24,13 @@ exports.getSavedPosts = async ({ userId }) => {
                     vendor: {
                         select: {
                             id: true,
-
+                            category: true,
+                            price: true,
                             user: {
                                 select: {
                                     name: true,
-                                    profilePicture: true
+                                    profilePicture: true,
+                                    region: true,
                                 }
                             }
                         }

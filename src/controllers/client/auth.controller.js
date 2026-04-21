@@ -1,4 +1,3 @@
-const { th } = require("zod/locales");
 const authService = require("../../services/client/auth.service");
 const { ApiError } = require("../../utils/apiError");
 
@@ -37,5 +36,17 @@ exports.logout = async (req, res) => {
     res.json({ message: "Logged out" });
   } catch (e) {
     throw new ApiError(400, e.message);
+  }
+};
+
+
+exports.verifyToken = async (req, res) => {
+  // extract the token from the header
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const user = await authService.verifyToken(token);
+    res.json(user);
+  } catch (e) {
+    throw new ApiError(401, e.message);
   }
 };

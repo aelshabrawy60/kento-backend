@@ -109,3 +109,9 @@ exports.logout = async (token) => {
     where: { token },
   });
 };
+
+exports.verifyToken = async (token) => {
+  const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+  const user = await prisma.user.findUnique({ where: { id: decoded.userId } });
+  return user;
+};

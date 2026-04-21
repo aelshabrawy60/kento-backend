@@ -1,6 +1,13 @@
 // define TOKEN
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyZDg1MmRlMy03MDQ1LTRjOWMtOTU4Ni0zMWM3ZWFiY2RjYzYiLCJyb2xlIjoiQ0xJRU5UIiwiaWF0IjoxNzc2NTMzODQ5LCJleHAiOjE3NzY1MzQ3NDl9.jgun3dlh99MKteck_2NdOQLo38ZWr9c7M_hGd--845U
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyZDg1MmRlMy03MDQ1LTRjOWMtOTU4Ni0zMWM3ZWFiY2RjYzYiLCJyb2xlIjoiQ0xJRU5UIiwiaWF0IjoxNzc2NTkxNTIzLCJleHAiOjE3NzY1OTI0MjN9.xSrJebcqc0Lhr1DA9HW-JVDLhx7Uz0yf4y8enwqjnEM
 @API_URL = http://localhost:8080/api/clients
+
+
+// test verify token
+###
+POST {{API_URL}}/verify
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
 
 // test registering a new client
 ###
@@ -83,3 +90,25 @@ Authorization: Bearer {{TOKEN}}
 {
   "postId": "3075338c-efe4-43e5-848e-75e099e4b2ea"
 }
+
+
+// test creating contract as a client
+###
+POST {{API_URL}}/contracts
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+{
+  "vendorId": "a21f20c6-c571-443b-bd4f-b3169a02fd18",
+  "description": "Great vendor!",
+  "title": "Great vendor!",
+  "price": 100,
+  "deposit": 50,
+  "startDate": "2022-01-01T00:00:00.000Z",
+  "deliveryDate": "2022-01-01T00:00:00.000Z"
+}
+
+// test getting contracts as a client
+###
+GET {{API_URL}}/contracts
+Authorization: Bearer {{TOKEN}}
