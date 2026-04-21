@@ -114,10 +114,10 @@ model Contract {
   status       ContractStatus @default(PENDING)
   description  String?
   title        String?
-  price        Float
-  deposit      Float
+  price        Float?
+  deposit      Float?
   startDate    DateTime
-  deliveryDate DateTime
+  deliveryDate DateTime?
 }
 
 enum ContractStatus {
