@@ -111,7 +111,7 @@ model Contract {
   vendor       Vendor         @relation(fields: [vendorId], references: [id])
   createdAt    DateTime       @default(now())
   completedAt  DateTime?
-  status       ContractStatus @default(PENDING)
+  status       ContractStatus
   description  String?
   title        String?
   price        Float?
