@@ -48,25 +48,27 @@ model Client {
   user       User        @relation(fields: [userId], references: [id])
   reviews    Review[]
   savedPosts SavedPost[]
-  contracts  Contract[]
+  bookings   Booking[]
 }
 
 model Vendor {
-  id             String          @id @default(uuid())
-  userId         String          @unique
-  user           User            @relation(fields: [userId], references: [id])
-  category       String?
-  about          String?
-  price          Int?
-  experience     Int?
-  portfolioUrl   String?
-  type           Int?
-  profileStatus  ProfileStatus   @default(UNDER_REVIEW)
-  topImageUrl    String?
-  rating         Float?
-  portfolioPosts PortfolioPost[]
-  reviews        Review[]
-  contracts      Contract[]
+  id              String          @id @default(uuid())
+  userId          String          @unique
+  user            User            @relation(fields: [userId], references: [id])
+  category        String?
+  about           String?
+  price           Int?
+  experience      Int?
+  portfolioUrl    String?
+  type            Int?
+  profileStatus   ProfileStatus   @default(UNDER_REVIEW)
+  topImageUrl     String?
+  rating          Float?
+  unavailableDays DateTime[]
+  portfolioPosts  PortfolioPost[]
+  reviews         Review[]
+  packages        Package[]
+  bookings        Booking[]
 }
 
 model PortfolioPost {
@@ -103,26 +105,36 @@ model SavedPost {
   @@unique([clientId, postId])
 }
 
-model Contract {
-  id           String         @id @default(uuid())
-  clientId     String
+model Package {
+  id           String    @id @default(uuid())
   vendorId     String
-  client       Client         @relation(fields: [clientId], references: [id])
-  vendor       Vendor         @relation(fields: [vendorId], references: [id])
-  createdAt    DateTime       @default(now())
-  completedAt  DateTime?
-  status       ContractStatus
+  vendor       Vendor    @relation(fields: [vendorId], references: [id])
+  name         String?
   description  String?
-  title        String?
-  price        Float?
-  deposit      Float?
-  startDate    DateTime
-  deliveryDate DateTime?
+  price        Int
+  features     String[]
+  numPhotos    Int
+  numVideos    Int
+  deliveryTime Int
+  createdAt    DateTime  @default(now())
+  bookings     Booking[]
 }
 
-enum ContractStatus {
-  OFFERED // wating for offer from vendor
-  PENDING // waiting for payment
+model Booking {
+  id          String        @id @default(uuid())
+  clientId    String
+  vendorId    String
+  packageId   String
+  client      Client        @relation(fields: [clientId], references: [id])
+  vendor      Vendor        @relation(fields: [vendorId], references: [id])
+  package     Package       @relation(fields: [packageId], references: [id])
+  serviceDate DateTime
+  createdAt   DateTime      @default(now())
+  status      BookingStatus @default(PENDING)
+}
+
+enum BookingStatus {
+  PENDING
   IN_PROGRESS
   COMPLETED
   CANCELLED

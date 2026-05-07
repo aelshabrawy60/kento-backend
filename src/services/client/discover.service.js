@@ -97,7 +97,8 @@ exports.getVendorById = async ({ vendorId, userId }) => {
                     where: {
                         rater: "CLIENT"
                     }
-                }
+                },
+                packages: true
             },
         });
 

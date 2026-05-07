@@ -55,3 +55,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyOGJmM
 // test getting a vendor by id as a client
 ###
 GET http://localhost:8080/api/clients/vendors/a21f20c6-c571-443b-bd4f-b3169a02fd18
+
+// test editing a vendor profile
+###
+PUT http://localhost:8080/api/vendors/profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyOGJmMTM5My1hMDkxLTQzZWUtOWRhZi0zOWE2NDc3M2Q1ZWEiLCJyb2xlIjoiVkVORE9SIiwiaWF0IjoxNzc1NzU0NzU0LCJleHAiOjE3NzU3NTU2NTR9.B-m1p4xAWbZKJCGJ0YZDTsjdB7qPpURG1oolpac7KhU
+
+{
+  "name": "Mohamed Gamal Updated",
+  "about": "Updated about section with more details about my photography style."
+}

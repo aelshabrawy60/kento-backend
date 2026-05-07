@@ -12,9 +12,9 @@ const { onboard } = require("../../controllers/vendor/onboard.controller");
 const { createPost } = require("../../controllers/vendor/posts.controller");
 
 // check auth middleware
-const authenticate  = require("../../middlewares/auth.middleware");
+const authenticate = require("../../middlewares/auth.middleware");
 // check the role middleware
-const role  = require("../../middlewares/role.middleware");
+const role = require("../../middlewares/role.middleware");
 
 router.post("/register", register);
 router.post("/login", login);
