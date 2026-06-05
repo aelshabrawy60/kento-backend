@@ -1,4 +1,5 @@
 const prisma = require("../../config/prisma");
+const paymentService = require("../payment.service");
 
 /**
  * Create a new booking for a client
@@ -89,3 +90,118 @@ exports.createBooking = async ({ userId, packageId, date }) => {
     throw error;
   }
 };
+
+const BOOKING_INCLUDE = {
+  package: {
+    select: {
+      id: true,
+      name: true,
+      price: true,
+      description: true,
+      deliveryTime: true,
+      numPhotos: true,
+      numVideos: true,
+    },
+  },
+  vendor: {
+    include: {
+      user: {
+        select: {
+          name: true,
+          email: true,
+          profilePicture: true,
+          region: true,
+        },
+      },
+    },
+  },
+};
+
+/**
+ * Get all bookings for the authenticated client
+ */
+exports.getBookings = async ({ userId }) => {
+  const client = await prisma.client.findUnique({ where: { userId } });
+  if (!client) {
+    const error = new Error("Client profile not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  return await prisma.booking.findMany({
+    where: { clientId: client.id },
+    include: BOOKING_INCLUDE,
+    orderBy: { createdAt: "desc" },
+  });
+};
+
+/**
+ * Initiate Paymob payment for an ACCEPTED booking
+ * Returns { paymentUrl } to redirect the client to Paymob checkout
+ */
+exports.payBooking = async ({ userId, bookingId }) => {
+  // 1. Get client
+  const client = await prisma.client.findUnique({
+    where: { userId },
+    include: {
+      user: {
+        select: { name: true, email: true, phone: true },
+      },
+    },
+  });
+  if (!client) {
+    const error = new Error("Client profile not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  // 2. Get booking with package
+  const booking = await prisma.booking.findUnique({
+    where: { id: bookingId },
+    include: { package: true },
+  });
+
+  if (!booking) {
+    const error = new Error("Booking not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  if (booking.clientId !== client.id) {
+    const error = new Error("Unauthorized to pay for this booking");
+    error.statusCode = 403;
+    throw error;
+  }
+
+  if (booking.status !== "ACCEPTED") {
+    const error = new Error("Only ACCEPTED bookings can be paid");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // 3. Build billing data from client user
+  const nameParts = (client.user.name || "").split(" ");
+  const billingData = {
+    firstName: nameParts[0] || "N/A",
+    lastName: nameParts.slice(1).join(" ") || "N/A",
+    email: client.user.email || "N/A",
+    phone: client.user.phone || "N/A",
+  };
+
+  // 4. Create Kashier checkout URL
+  const amount = booking.package.price;
+  const { paymentUrl, isTestMode } = paymentService.createPaymentUrl({
+    amount,
+    currency: "EGP",
+    bookingId: booking.id,
+  });
+
+  // 5. Store the order ID on the booking (for Kashier we use the booking ID as order ID)
+  await prisma.booking.update({
+    where: { id: bookingId },
+    data: { paymentOrderId: booking.id },
+  });
+
+  return { paymentUrl, isTestMode };
+};
+

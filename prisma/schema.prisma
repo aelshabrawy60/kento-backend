@@ -121,20 +121,24 @@ model Package {
 }
 
 model Booking {
-  id          String        @id @default(uuid())
-  clientId    String
-  vendorId    String
-  packageId   String
-  client      Client        @relation(fields: [clientId], references: [id])
-  vendor      Vendor        @relation(fields: [vendorId], references: [id])
-  package     Package       @relation(fields: [packageId], references: [id])
-  serviceDate DateTime
-  createdAt   DateTime      @default(now())
-  status      BookingStatus @default(PENDING)
+  id                 String        @id @default(uuid())
+  clientId           String
+  vendorId           String
+  packageId          String
+  client             Client        @relation(fields: [clientId], references: [id])
+  vendor             Vendor        @relation(fields: [vendorId], references: [id])
+  package            Package       @relation(fields: [packageId], references: [id])
+  serviceDate        DateTime
+  createdAt          DateTime      @default(now())
+  status             BookingStatus @default(PENDING)
+  paymentOrderId  String?
 }
 
 enum BookingStatus {
   PENDING
+  ACCEPTED
+  REJECTED
+  PAID
   IN_PROGRESS
   COMPLETED
   CANCELLED

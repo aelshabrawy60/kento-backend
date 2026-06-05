@@ -37,3 +37,32 @@ exports.createBooking = async (req, res, next) => {
     });
   }
 };
+
+/**
+ * Get all bookings for the authenticated client
+ */
+exports.getBookings = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const bookings = await bookingService.getBookings({ userId });
+    res.status(200).json({ success: true, data: bookings });
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).json({ success: false, message: error.message || "Internal server error" });
+  }
+};
+
+/**
+ * Initiate Paymob payment for an ACCEPTED booking
+ */
+exports.payBooking = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const { id } = req.params;
+    const result = await bookingService.payBooking({ userId, bookingId: id });
+    res.status(200).json({ success: true, ...result });
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).json({ success: false, message: error.message || "Internal server error" });
+  }
+};
