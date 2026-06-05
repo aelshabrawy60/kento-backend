@@ -188,15 +188,21 @@ exports.payBooking = async ({ userId, bookingId }) => {
     phone: client.user.phone || "N/A",
   };
 
-  // 4. Create Kashier checkout URL
+  // 4. Create Kashier Payment Session (new v3 Sessions API → returns payments.kashier.io URL)
   const amount = booking.package.price;
-  const { paymentUrl, isTestMode } = paymentService.createPaymentUrl({
+  const customer = {
+    name:  billingData.firstName + (billingData.lastName !== "N/A" ? ` ${billingData.lastName}` : ""),
+    email: billingData.email,
+    phone: billingData.phone,
+  };
+  const { paymentUrl, isTestMode } = await paymentService.createPaymentUrl({
     amount,
     currency: "EGP",
     bookingId: booking.id,
+    customer,
   });
 
-  // 5. Store the order ID on the booking (for Kashier we use the booking ID as order ID)
+  // 5. Store the order ID on the booking (for Kashier we use the booking ID as orderId)
   await prisma.booking.update({
     where: { id: bookingId },
     data: { paymentOrderId: booking.id },
