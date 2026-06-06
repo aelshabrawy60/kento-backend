@@ -40,7 +40,9 @@ exports.createBooking = async ({ userId, packageId, date }) => {
 
     // 3. Check if date is in vendor's unavailable days
     // Normalize requested date to start of day UTC for comparison
-    const bookingDate = new Date(date);
+    // Parse the date as a UTC date to avoid timezone shifting.
+    // The frontend sends a plain 'YYYY-MM-DD' string.
+    const bookingDate = new Date(`${date}T00:00:00.000Z`);
     if (isNaN(bookingDate.getTime())) {
       const error = new Error("Invalid date format");
       error.statusCode = 400;

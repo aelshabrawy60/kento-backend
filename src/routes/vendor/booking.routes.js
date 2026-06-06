@@ -32,11 +32,4 @@ router.patch("/:id/reject", authenticate, role("VENDOR"), bookingController.reje
  */
 router.patch("/:id/request-completion", authenticate, role("VENDOR"), bookingController.requestCompletion);
 
-/**
- * @route PATCH /api/vendors/bookings/:id/complete
- * @desc Vendor directly marks a booking as COMPLETED (IN_PROGRESS → COMPLETED)
- * @access Private (Vendor)
- */
-router.patch("/:id/complete", authenticate, role("VENDOR"), bookingController.markComplete);
-
 module.exports = router;
