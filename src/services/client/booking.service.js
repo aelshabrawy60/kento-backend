@@ -136,8 +136,8 @@ exports.getBookings = async ({ userId }) => {
 };
 
 /**
- * Initiate Paymob payment for an ACCEPTED booking
- * Returns { paymentUrl } to redirect the client to Paymob checkout
+ * Initiate Kashier payment for an ACCEPTED booking.
+ * Charges a 10% deposit of the package price.
  */
 exports.payBooking = async ({ userId, bookingId }) => {
   // 1. Get client
@@ -188,26 +188,70 @@ exports.payBooking = async ({ userId, bookingId }) => {
     phone: client.user.phone || "N/A",
   };
 
-  // 4. Create Kashier Payment Session (new v3 Sessions API → returns payments.kashier.io URL)
-  const amount = booking.package.price;
+  // 4. Calculate 10% deposit amount
+  const fullPrice = booking.package.price;
+  const depositAmount = Math.ceil(fullPrice * 0.10); // 10% deposit, rounded up
+
   const customer = {
     name:  billingData.firstName + (billingData.lastName !== "N/A" ? ` ${billingData.lastName}` : ""),
     email: billingData.email,
     phone: billingData.phone,
   };
+
+  console.log(`[Booking] Charging 10% deposit: ${depositAmount} EGP (full price: ${fullPrice} EGP)`);
+
   const { paymentUrl, isTestMode } = await paymentService.createPaymentUrl({
-    amount,
+    amount: depositAmount,
     currency: "EGP",
     bookingId: booking.id,
     customer,
   });
 
-  // 5. Store the order ID on the booking (for Kashier we use the booking ID as orderId)
+  // 5. Store the order ID on the booking
   await prisma.booking.update({
     where: { id: bookingId },
     data: { paymentOrderId: booking.id },
   });
 
-  return { paymentUrl, isTestMode };
+  return { paymentUrl, isTestMode, depositAmount, fullPrice };
 };
 
+/**
+ * Client confirms the booking is completed (IN_PROGRESS → COMPLETED)
+ */
+exports.completeBooking = async ({ userId, bookingId }) => {
+  const client = await prisma.client.findUnique({ where: { userId } });
+  if (!client) {
+    const error = new Error("Client profile not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const booking = await prisma.booking.findUnique({
+    where: { id: bookingId },
+  });
+
+  if (!booking) {
+    const error = new Error("Booking not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  if (booking.clientId !== client.id) {
+    const error = new Error("Unauthorized to complete this booking");
+    error.statusCode = 403;
+    throw error;
+  }
+
+  if (booking.status !== "IN_PROGRESS") {
+    const error = new Error("Only IN_PROGRESS bookings can be completed");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  return await prisma.booking.update({
+    where: { id: bookingId },
+    data: { status: "COMPLETED" },
+    include: BOOKING_INCLUDE,
+  });
+};

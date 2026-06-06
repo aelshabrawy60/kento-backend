@@ -31,7 +31,7 @@ router.get(
 
 /**
  * @route POST /api/clients/bookings/:id/pay
- * @desc Initiate Paymob payment for an accepted booking
+ * @desc Initiate Kashier payment (10% deposit) for an accepted booking
  * @access Private (Client)
  */
 router.post(
@@ -41,5 +41,16 @@ router.post(
   bookingController.payBooking
 );
 
-module.exports = router;
+/**
+ * @route PATCH /api/clients/bookings/:id/complete
+ * @desc Client confirms the booking is completed (IN_PROGRESS → COMPLETED)
+ * @access Private (Client)
+ */
+router.patch(
+  "/:id/complete",
+  authenticate,
+  role("CLIENT"),
+  bookingController.completeBooking
+);
 
+module.exports = router;

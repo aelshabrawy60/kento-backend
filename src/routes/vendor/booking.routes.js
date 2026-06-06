@@ -13,16 +13,30 @@ router.get("/", authenticate, role("VENDOR"), bookingController.getBookings);
 
 /**
  * @route PATCH /api/vendors/bookings/:id/accept
- * @desc Accept a booking
+ * @desc Accept a booking (PENDING → ACCEPTED)
  * @access Private (Vendor)
  */
 router.patch("/:id/accept", authenticate, role("VENDOR"), bookingController.acceptBooking);
 
 /**
  * @route PATCH /api/vendors/bookings/:id/reject
- * @desc Reject a booking
+ * @desc Reject a booking (PENDING → REJECTED)
  * @access Private (Vendor)
  */
 router.patch("/:id/reject", authenticate, role("VENDOR"), bookingController.rejectBooking);
+
+/**
+ * @route PATCH /api/vendors/bookings/:id/request-completion
+ * @desc Vendor signals that work is done — prompts client to confirm
+ * @access Private (Vendor)
+ */
+router.patch("/:id/request-completion", authenticate, role("VENDOR"), bookingController.requestCompletion);
+
+/**
+ * @route PATCH /api/vendors/bookings/:id/complete
+ * @desc Vendor directly marks a booking as COMPLETED (IN_PROGRESS → COMPLETED)
+ * @access Private (Vendor)
+ */
+router.patch("/:id/complete", authenticate, role("VENDOR"), bookingController.markComplete);
 
 module.exports = router;

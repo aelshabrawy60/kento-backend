@@ -53,7 +53,7 @@ exports.getBookings = async (req, res, next) => {
 };
 
 /**
- * Initiate Paymob payment for an ACCEPTED booking
+ * Initiate Kashier payment for an ACCEPTED booking (10% deposit)
  */
 exports.payBooking = async (req, res, next) => {
   try {
@@ -61,6 +61,21 @@ exports.payBooking = async (req, res, next) => {
     const { id } = req.params;
     const result = await bookingService.payBooking({ userId, bookingId: id });
     res.status(200).json({ success: true, ...result });
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).json({ success: false, message: error.message || "Internal server error" });
+  }
+};
+
+/**
+ * Client confirms the booking is completed (IN_PROGRESS → COMPLETED)
+ */
+exports.completeBooking = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const { id } = req.params;
+    const booking = await bookingService.completeBooking({ userId, bookingId: id });
+    res.status(200).json({ success: true, message: "Booking marked as completed", data: booking });
   } catch (error) {
     const statusCode = error.statusCode || 500;
     res.status(statusCode).json({ success: false, message: error.message || "Internal server error" });

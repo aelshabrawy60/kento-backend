@@ -87,13 +87,14 @@ exports.handleCallback = async (req, res) => {
       // Confirm the booking is still in a payable state before updating
       const booking = await prisma.booking.findUnique({ where: { id: bookingId } });
       if (booking && booking.status === "ACCEPTED") {
+        // Deposit confirmed — move straight to IN_PROGRESS (PAID is transient)
         await prisma.booking.update({
           where: { id: bookingId },
-          data:  { status: "PAID" },
+          data:  { status: "IN_PROGRESS" },
         });
-        console.log(`[Kashier] ✅ Booking ${bookingId} marked as PAID`);
-      } else if (booking?.status === "PAID") {
-        console.log(`[Kashier] Booking ${bookingId} already PAID — skipping`);
+        console.log(`[Kashier] ✅ Booking ${bookingId} deposit received — status set to IN_PROGRESS`);
+      } else if (booking?.status === "IN_PROGRESS" || booking?.status === "PAID") {
+        console.log(`[Kashier] Booking ${bookingId} already processed (${booking.status}) — skipping`);
       } else {
         console.warn(`[Kashier] Booking ${bookingId} in unexpected state: ${booking?.status}`);
       }
