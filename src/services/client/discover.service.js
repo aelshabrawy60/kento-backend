@@ -13,7 +13,9 @@ exports.discover = async ({ category, region, priceRange }) => {
         };
         if (category) where.category = category;
         // the region filter is in the user table, so we need to join with the user table to filter by region
-        if (region) where.user = { region };
+        // Use contains so filtering by governorate (e.g. "Cairo") matches
+        // granular stored values like "Nasr City, Cairo"
+        if (region) where.user = { region: { contains: region, mode: "insensitive" } };
 
         if (priceRange) {
             const [min, max] = priceRange.split("-").map(Number);

@@ -28,6 +28,7 @@ exports.getSavedPosts = async ({ userId }) => {
                             price: true,
                             user: {
                                 select: {
+                                    id: true,
                                     name: true,
                                     profilePicture: true,
                                     region: true,
