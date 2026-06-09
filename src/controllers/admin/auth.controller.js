@@ -1,20 +1,11 @@
-const authService = require("../../services/vendor/auth.service");
-
-exports.register = async (req, res) => {
-  try {
-    const user = await authService.register(req.body);
-    res.status(201).json(user);
-  } catch (e) {
-    res.status(400).json({ error: e.message });
-  }
-};
+const authService = require("../../services/admin/auth.service");
 
 exports.login = async (req, res) => {
   try {
     const data = await authService.login(req.body);
     res.json(data);
   } catch (e) {
-    res.status(400).json({ error: e.message });
+    res.status(401).json({ error: e.message });
   }
 };
 
@@ -41,9 +32,7 @@ exports.logout = async (req, res) => {
 exports.verifyToken = async (req, res) => {
   try {
     const authHeader = req.headers?.authorization || req.headers?.Authorization;
-    if (!authHeader) {
-      throw new Error("No token provided");
-    }
+    if (!authHeader) throw new Error("No token provided");
     const token = authHeader.split(" ")[1];
     const user = await authService.verifyToken(token);
     res.json(user);

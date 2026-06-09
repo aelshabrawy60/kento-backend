@@ -1,4 +1,5 @@
 const prisma = require("../../config/prisma");
+const notificationService = require("../../services/notification.service");
 
 const BOOKING_INCLUDE = {
   client: {
@@ -74,11 +75,23 @@ exports.acceptBooking = async ({ userId, bookingId }) => {
     throw error;
   }
 
-  return await prisma.booking.update({
+  const updatedBooking = await prisma.booking.update({
     where: { id: bookingId },
     data: { status: "ACCEPTED" },
     include: BOOKING_INCLUDE,
   });
+
+  const client = await prisma.client.findUnique({ where: { id: booking.clientId } });
+  if (client) {
+    await notificationService.createNotification({
+      userId: client.userId,
+      type: "BOOKING_ACCEPTED",
+      message: `Your booking request has been accepted!`,
+      bookingId: booking.id,
+    });
+  }
+
+  return updatedBooking;
 };
 
 /**
@@ -114,11 +127,23 @@ exports.rejectBooking = async ({ userId, bookingId }) => {
     throw error;
   }
 
-  return await prisma.booking.update({
+  const updatedBooking = await prisma.booking.update({
     where: { id: bookingId },
     data: { status: "REJECTED" },
     include: BOOKING_INCLUDE,
   });
+
+  const client = await prisma.client.findUnique({ where: { id: booking.clientId } });
+  if (client) {
+    await notificationService.createNotification({
+      userId: client.userId,
+      type: "BOOKING_REJECTED",
+      message: `Your booking request has been rejected.`,
+      bookingId: booking.id,
+    });
+  }
+
+  return updatedBooking;
 };
 
 /**
@@ -155,10 +180,22 @@ exports.requestCompletion = async ({ userId, bookingId }) => {
     throw error;
   }
 
-  return await prisma.booking.update({
+  const updatedBooking = await prisma.booking.update({
     where: { id: bookingId },
     data: { completionRequestedByVendor: true },
     include: BOOKING_INCLUDE,
   });
+
+  const client = await prisma.client.findUnique({ where: { id: booking.clientId } });
+  if (client) {
+    await notificationService.createNotification({
+      userId: client.userId,
+      type: "COMPLETION_REQUESTED",
+      message: `The vendor has requested to mark the booking as completed.`,
+      bookingId: booking.id,
+    });
+  }
+
+  return updatedBooking;
 };
 

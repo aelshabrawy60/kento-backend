@@ -1,5 +1,4 @@
 const prisma = require("../../config/prisma");
-const StreamChat = require("stream-chat").StreamChat;
 
 exports.getProfile = async (userId) => {
     return await prisma.user.findUnique({
@@ -38,22 +37,6 @@ exports.updateProfile = async (userId, data) => {
             where: { id: userId },
             data: userData,
         });
-
-        // Update Stream Chat user if name or profilePicture changed
-        if (name !== undefined || profilePicture !== undefined) {
-            const updatedUser = await prisma.user.findUnique({ where: { id: userId } });
-            
-            const serverClient = StreamChat.getInstance(
-                process.env.STREAM_CHAT_API_KEY,
-                process.env.STREAM_CHAT_API_SECRET,
-            );
-
-            await serverClient.upsertUser({
-                id: userId,
-                name: updatedUser.name,
-                image: updatedUser.profilePicture,
-            });
-        }
     }
 
     const vendorData = {};

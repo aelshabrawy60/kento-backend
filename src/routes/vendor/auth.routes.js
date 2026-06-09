@@ -6,6 +6,7 @@ const {
   login,
   refresh,
   logout,
+  verifyToken,
 } = require("../../controllers/vendor/auth.controller");
 
 const { onboard } = require("../../controllers/vendor/onboard.controller");
@@ -20,6 +21,7 @@ router.post("/register", register);
 router.post("/login", login);
 router.post("/refresh", refresh);
 router.post("/logout", logout);
+router.post("/verify", verifyToken);
 router.post("/onboard", authenticate, role("VENDOR"), onboard);
 router.post("/posts", authenticate, role("VENDOR"), createPost);
 

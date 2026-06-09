@@ -5,8 +5,7 @@ const jwt = require("jsonwebtoken");
 
 const {
   generateAccessToken,
-  generateRefreshToken,
-  generateStreamChatToken
+  generateRefreshToken
 } = require("../../utils/token");
 
 exports.register = async ({ name, email, password }) => {
@@ -29,7 +28,6 @@ exports.register = async ({ name, email, password }) => {
   // generate tokens
   const accessToken = generateAccessToken(user);
   const refreshToken = generateRefreshToken(user);
-  const streamChatToken = generateStreamChatToken(user);
 
 
 
@@ -42,7 +40,7 @@ exports.register = async ({ name, email, password }) => {
   });
 
   delete user.password;
-  return { user, accessToken, refreshToken, streamChatToken };
+  return { user, accessToken, refreshToken };
 };
 
 exports.login = async ({ email, password }) => {
@@ -54,7 +52,6 @@ exports.login = async ({ email, password }) => {
 
   const accessToken = generateAccessToken(user);
   const refreshToken = generateRefreshToken(user);
-  const streamChatToken = generateStreamChatToken(user);
 
   await prisma.refreshToken.create({
     data: {
@@ -66,7 +63,7 @@ exports.login = async ({ email, password }) => {
 
   delete user.password;
 
-  return { user, accessToken, refreshToken, streamChatToken };
+  return { user, accessToken, refreshToken };
 };
 
 exports.refresh = async (token) => {
@@ -111,4 +108,10 @@ exports.logout = async (token) => {
   await prisma.refreshToken.deleteMany({
     where: { token },
   });
+};
+
+exports.verifyToken = async (token) => {
+  const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+  const user = await prisma.user.findUnique({ where: { id: decoded.userId } });
+  return user;
 };

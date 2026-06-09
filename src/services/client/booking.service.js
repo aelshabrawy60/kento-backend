@@ -1,5 +1,6 @@
 const prisma = require("../../config/prisma");
 const paymentService = require("../payment.service");
+const notificationService = require("../../services/notification.service");
 
 /**
  * Create a new booking for a client
@@ -84,6 +85,13 @@ exports.createBooking = async ({ userId, packageId, date }) => {
           },
         },
       },
+    });
+
+    await notificationService.createNotification({
+      userId: vendor.userId,
+      type: "BOOKING_CREATED",
+      message: `You have a new booking request for ${pkg.name}.`,
+      bookingId: booking.id,
     });
 
     return booking;
@@ -251,9 +259,21 @@ exports.completeBooking = async ({ userId, bookingId }) => {
     throw error;
   }
 
-  return await prisma.booking.update({
+  const updatedBooking = await prisma.booking.update({
     where: { id: bookingId },
     data: { status: "COMPLETED" },
     include: BOOKING_INCLUDE,
   });
+
+  const vendor = await prisma.vendor.findUnique({ where: { id: booking.vendorId } });
+  if (vendor) {
+    await notificationService.createNotification({
+      userId: vendor.userId,
+      type: "BOOKING_COMPLETED",
+      message: `A booking has been marked as completed by the client.`,
+      bookingId: booking.id,
+    });
+  }
+
+  return updatedBooking;
 };

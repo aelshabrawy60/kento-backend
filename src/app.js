@@ -7,6 +7,11 @@ const vendorProfileRoutes = require("./routes/vendor/profile.routes");
 const vendorBookingRoutes = require("./routes/vendor/booking.routes");
 const clientBookingRoutes = require("./routes/client/booking.routes");
 const paymentRoutes = require("./routes/payment.routes");
+const adminAuthRoutes = require("./routes/admin/auth.routes");
+const adminRoutes = require("./routes/admin/admin.routes");
+const categoryRoutes = require("./routes/client/category.routes");
+const notificationRoutes = require("./routes/notification.routes");
+const chatRoutes = require("./routes/chat.routes");
 const { errorHandler } = require("./middlewares/error.middleware");
 
 const app = express();
@@ -22,6 +27,11 @@ app.use("/api/vendors/profile", vendorProfileRoutes);
 app.use("/api/vendors/bookings", vendorBookingRoutes);
 app.use("/api/clients/bookings", clientBookingRoutes);
 app.use("/api/payments", paymentRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/admin", adminAuthRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/chats", chatRoutes);
 app.use(errorHandler)
 
 
